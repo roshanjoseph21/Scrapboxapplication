@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <link rel="stylesheet" href="{%static 'css/indexstyle.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar bg-dark  border-body text-light" data-bs-theme="dark">
+  
+        <p><h1>Driven Innovations</h1></p>
+      
+      
+  </nav>
+    <nav class="navbar bg-success p-2 text-dark bg-opacity-25 border-bottom border-body text-dark text-start" data-bs-theme="dark">
+  
+      <p class=" "><h3>WELCOME!!!   {{request.user}}</h3></p>
+
+      <div class="btn-group d-flex justify-content-start">
+        <button type="button" class="btn btn-secondary">Menu</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <div class=" mt-3 ">
+              
+              <a href="{%url 'profiledetail_view' request.user.profile.id  %}"><button class="btn btn-secondary">View Profile</button></a>
+      
+            </div>
+          </li>
+          <li>
+
+          </li>
+          <li>
+            <div class=" mt-3 ">
+              <a href="{%url 'list-all' %}"><button class="btn btn-secondary">Go to All List</button></a> 
+          </div>
+          </li>
+          <li>
+            <div class="mt-3 "><a href="{%url 'signout'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light">Logout </a> </div>
+
+          </li>
+          
+        </ul>
+      </div>
+      
+  </nav>
+
+  <div class="container d-flex justify-content-center">
+    <div class="card mb-3">
+      <img src="{%static 'images/login3.jpg'%}" class="card-img-top" alt="..."  width="40" height="300">
+      <div class="card-body">
+        <h5 class="card-title">Driven Innovations</h5>
+        <p class="card-text">
+          Driven Inoovations Group is a Kerala-domiciled online market place headquartered in Kotayam,kerala,India since 2009. The consumer brand originated as OnLine exchange.
+          Driven Innovations Group is owned by AGM group of companies.
+        </p>
+        <p class="card-text">
+          <style>
+              
+            ul.no-bullets {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+
+          </style>
+          <ul class="no-bullets">
+            <li><i class="fa-solid fa-location-dot ms-2 p-2"></i><a href="">https://www.google.com/maps/search/?api=1&query=centurylink+field</a></li>
+            <li><i class="fa-solid fa-envelope ms-2 p-2"></i>driveninnovations@hotmail.com</li>
+            <li><i class="fa-solid fa-phone ms-2 p-2"></i>0481-2340117, +919495451658</li>
+            
+          </ul>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+</html>
