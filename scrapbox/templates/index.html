@@ -18,11 +18,15 @@
       
       
   </nav>
-    <nav class="navbar bg-success p-2 text-dark bg-opacity-25 border-bottom border-body text-dark text-start" data-bs-theme="dark">
+    <nav class="navbar bg-success p-2 text-dark bg-opacity-25 border-bottom border-body text-dark text-start  " data-bs-theme="dark">
   
-      <p class=" "><h3>WELCOME!!!   {{request.user}}</h3></p>
+    <div class="col-l-8 d-flex justify-content-center">
+              <h4>Hai {{request.user}}, Welcome....</h4>
+    </div>
 
-      <div class="btn-group d-flex justify-content-start">
+     <div class="col-l-8">
+      <div class="btn-group d-flex justify-content-start border border-dark">
+        
         <button type="button" class="btn btn-secondary">Menu</button>
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
           <span class="visually-hidden">Toggle Dropdown</span>
@@ -41,7 +45,17 @@
           <li>
             <div class=" mt-3 ">
               <a href="{%url 'list-all' %}"><button class="btn btn-secondary">Go to All List</button></a> 
-          </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="mt-3 "><a href="{%url 'scrap-create'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light">Create New</a> </div>
+
+          </li>
+
+          <li>
+            <div class="mt-3 "><a href="{%url 'signout'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light">My cart</a> </div>
+
           </li>
           <li>
             <div class="mt-3 "><a href="{%url 'signout'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light">Logout </a> </div>
@@ -50,6 +64,7 @@
           
         </ul>
       </div>
+     </div>
       
   </nav>
 
@@ -85,6 +100,10 @@
 
   </div>
 
-
+  <div class="card-footer text-body-secondary d-flex justify-content-center" >
+    <i class="fa-brands fa-facebook ms-1 "></i>
+    <i class="fa-brands fa-instagram ms-1"></i>
+    <i class="fa-brands fa-youtube ms-1 "></i>
+  </div>
 </body>
 </html>

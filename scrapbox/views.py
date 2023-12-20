@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect,reverse
 from django.contrib.auth import login,logout,authenticate
-from scrapbox.models import Scrapbox
+from scrapbox.models import Scrapbox,UserProfile
+
 from django.views.generic import View,DetailView,CreateView
 from scrapbox.forms import UserForm,LoginForm,ScrapboxForm
-from scrapbox.forms import UserCreationForm,UserProfile
+from scrapbox.forms import UserCreationForm #UserProfile
 
 from django.contrib import messages
 
@@ -48,22 +49,25 @@ class LoginView(View):
         return render(request,"login.html",{"form":form})
     
 #index view
-#http://127.0.0.1:8000/index/create
+#http://127.0.0.1:8000/scrap/create
 class ScrapCreateView(View):
     def get(self,request,*args,**kwargs):
         form=ScrapboxForm()
-        return render(request,"createitem.html",{"form":form})
+        return render(request,"scrapbox_add.html",{"form":form})
 
     def post(self,request,*args,**kwargs):
         form=ScrapboxForm(request.POST,files=request.FILES)
         if form.is_valid():
-                form.instance.user=request.user
+                
                 form.save()
                 messages.success(request,"....new data created successfully....")
-                return redirect('signin')
+                print("successssssss")
+                return redirect('index')
         else:
                 messages.error(request,"....error on create new data....")
-                return render(request,"index.html",{"form":form})
+                print("errorrrrrrr")
+                return render(request,"login.html",{"form":form})
+
         
 #list view
 class ScrapboxListView(View):

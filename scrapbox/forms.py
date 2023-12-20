@@ -32,8 +32,16 @@ class LoginForm(forms.Form):
 class ScrapboxForm(forms.ModelForm):
     class Meta:
         model=Scrapbox
-        # fields=["name"]
-        fields=["name","category","price","location","picture","phone_no"]
+        fields="__all__"
+        #fields=["name","category","price","location","picture","phone_no"]
+        widgets={
+            "name":forms.TextInput(attrs={"class":"form-control"}),
+            "category":forms.TextInput(attrs={"class":"form-control"}),
+            "price":forms.TextInput(attrs={"class":"form-control"}),
+            "location":forms.TextInput(attrs={"class":"form-control"}),
+            "phone_no":forms.TextInput(attrs={"class":"form-control"}),
+        }
+
 
 
 class UserProfileForm(forms.ModelForm):
