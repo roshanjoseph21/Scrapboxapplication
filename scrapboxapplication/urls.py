@@ -28,6 +28,10 @@ urlpatterns = [
     path('listall',views.ScrapboxListView.as_view(),name="list-all"),
     path('itemview/<int:pk>/viewdetails',views.ItemView.as_view(),name="itemview"),
     path('profile/<int:pk>/view',views.ProfileDetailView.as_view(),name="profiledetail_view"),
+    path('cart/view',views.CartListView.as_view(),name="cart-view"),
+    path('scrapbox/<int:pk>/addtobasket',views.AddToCartView.as_view(),name="add-cart"),
+    path('scrap/<int:pk>/update',views.ScrapUpdateView.as_view(),name="scrap-update"),
+    path('scrapbox/<int:pk>/add_to_basket/',views.AddToCartView.as_view(),name="addto-cart"),
    
     
     

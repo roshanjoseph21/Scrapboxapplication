@@ -2,7 +2,7 @@ from django import forms
 
 from django.contrib.auth.models import User  #import User model
 
-from scrapbox.models import Scrapbox
+from scrapbox.models import Scrapbox,Basket,BasketItem
 from scrapbox.models import UserProfile,Posts
 
 from django.contrib.auth.forms import UserCreationForm
@@ -33,14 +33,26 @@ class ScrapboxForm(forms.ModelForm):
     class Meta:
         model=Scrapbox
         fields="__all__"
-        #fields=["name","category","price","location","picture","phone_no"]
+        
         widgets={
             "name":forms.TextInput(attrs={"class":"form-control"}),
             "category":forms.TextInput(attrs={"class":"form-control"}),
             "price":forms.TextInput(attrs={"class":"form-control"}),
             "location":forms.TextInput(attrs={"class":"form-control"}),
             "phone_no":forms.TextInput(attrs={"class":"form-control"}),
+            "description":forms.TextInput(attrs={"class":"form-control"}),
         }
+
+
+class BasketForm(forms.ModelForm):
+    class Meta:
+        model=Basket 
+        fields="__all__"
+
+class BasketItemForm(forms.ModelForm):
+    class Meta:
+        model=BasketItem
+        fields="__all__"
 
 
 
@@ -50,6 +62,9 @@ class UserProfileForm(forms.ModelForm):
         model=UserProfile
         fields=["user","email","phone"]
        # exclude=("email")
+        
+
+
      
 
        
