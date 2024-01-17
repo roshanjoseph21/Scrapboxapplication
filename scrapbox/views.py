@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,reverse
 from django.contrib.auth import login,logout,authenticate
-from scrapbox.models import Scrapbox,UserProfile,Basket
+from scrapbox.models import Scrapbox,UserProfile,Basket,BasketItem
 
 from django.views.generic import View,DetailView,CreateView
 from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,BasketForm,BasketItemForm
@@ -102,12 +102,14 @@ class SignOutView(View):
         logout(request)
         return redirect("signin")
     
-#item view 
+#item view -retrive
 class ItemView(View):
     def get(self,request,*args,**kwargs):
         id=kwargs.get("pk")
         qs=Scrapbox.objects.get(id=id)
         return render(request,"scrapboxitem_view.html",{"data":qs})
+    
+    
 
 
 
@@ -127,37 +129,25 @@ class ProfileDetailView(DetailView):
     
 # # http://127.0.0.1:8000/listall
 
-# class AddToCartView(View):
-#     def get(self,request,*args,**kwargs):
-#         qs=Scrapbox.objects.all()
-#         return render(request,"scrapboxlist.html",{"data":qs})
 
-class AddToCartView(View)   :
-#    def cart_add(self,request,*args,**kwargs):
-#     id=kwargs.get("pk")
-#     form=BasketItemForm(request.POST)
-#     product_object=Scrapbox.objects.get(id=id)
-#     basket_object=request.user.cart
-#     if form.is_valid():
-#         cd = form.cleaned_data
-#         # cart.add(product=product, quantity=cd['quantity'], update_quantity=cd['update'])
-#     return redirect('cart-view')
+class AddToCartView(View) :
+    
     def get(self,request,*args,**kwargs):
         id=kwargs.get("pk")
         qs=Scrapbox.objects.get(id=id)
         return render(request,"scrapboxitem_view.html",{"data":qs})
     
-    def cart_add(self,request,*args,**kwargs):
-        id=kwargs.get("pk")
-        product_object=Scrapbox.objects.get(id=id)
-        request.user.cart.add(product_object)
-
+    def add_to_cart(self,request,*args,**kwargs):
+                id=kwargs.get("pk")
+                product= Scrapbox.objects.get(id=id)
+                cart,created=Basket.objects.get_or_create(user=request.user)
+                cart_item,item_created = BasketItem.objects.get_or_create(cart=cart,product=product)
+                if not item_created:
+                         cart_item.quantity += 1
+                         cart_item.save()
     
-       
-
-
-
-
+                return redirect("index")
+         
 
 #cart -view cart list  
 # http://127.0.0.1:8000/cart/view  

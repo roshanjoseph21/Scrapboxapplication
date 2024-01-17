@@ -28,7 +28,7 @@ class Scrapbox(models.Model):
 #cartitem
 
 
-class Basket(models.Model):
+class Basket(models.Model):     #cart
     owner=models.OneToOneField(User,on_delete=models.CASCADE,related_name="cart")
     is_active=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -40,7 +40,7 @@ class Basket(models.Model):
         qs=self.cartitem.all() #cartitem points to basket of basketitem
         return qs
  
-class BasketItem(models.Model):
+class BasketItem(models.Model):     #cartitem
     basket=models.ForeignKey(Basket,on_delete=models.CASCADE,related_name="cartitem")
     product=models.ForeignKey(Scrapbox,on_delete=models.CASCADE)
     qty=models.PositiveIntegerField(default=1)
