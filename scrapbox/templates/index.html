@@ -21,7 +21,7 @@
 <nav class="navbar bg-success p-2 text-dark bg-opacity-25 border-bottom border-body text-dark text-start  " data-bs-theme="dark">
 
         <div class="col-l-8 d-flex justify-content-center">
-                  <h4>  WELCOME..... {{request.user}}</h4>
+                  <h4 class="ms-3">  <i class="fa-solid fa-user"></i> {{request.user}}</h4>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
@@ -32,7 +32,7 @@
               <ul class="dropdown-menu">
                 <li>
                   <div class=" mt-3 ">
-                    <a href="{%url 'list-all' %}">View Available Items</a> 
+                    <a href="{%url 'list-all' %}"><button class="ms-auto btn btn-info border-dark bg-secondary text-light" >Available Items</button></a> 
                   </div>
                 </li>
                   
@@ -46,17 +46,17 @@
             <ul class="dropdown-menu">
 
               <li>
-                <div class="mt-3 "><a href="{%url 'scrap-create'%}" >Create New Item</a> </div>
+                <div class="mt-3 "><a href="{%url 'scrap-create'%}" ><button class="ms-auto btn btn-info border-dark bg-secondary text-light" >Create New Item</button></a> </div>
        
             </ul>
           </div>
 
           <div class="col-l-6">
-             <div>
+             <!-- <div>
                    <a href="{%url 'profiledetail_view' request.user.profile.id  %}"><button class="btn btn-secondary"><i class="fa-solid fa-user"></i></button></a>
                    <a href="{%url 'cart-view'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light"><i class="fa-solid fa-cart-shopping"></i></a> </div>
 
-              </div>
+              </div> -->
 
               <div class="col-l-6">
                 <a href="{%url 'signout'%}" class="ms-auto btn btn-info border-dark bg-secondary text-light"  ><i class="fa-solid fa-power-off"></i> </a> 

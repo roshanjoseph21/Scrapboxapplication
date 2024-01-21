@@ -10,6 +10,16 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 
+class UserProfile(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
+    email=models.CharField(max_length=200,null=True)
+    phone=models.CharField(max_length=200,null=True)
+    profile_pic=models.ImageField(upload_to="profilepics",null=True,blank=True)
+    
+
+    def __str__(self):
+        return self.user.username
+
 class Scrapbox(models.Model):
 
     name=models.CharField(max_length=200)
@@ -28,20 +38,21 @@ class Scrapbox(models.Model):
 #cartitem
 
 
-class Basket(models.Model):     #cart
-    owner=models.OneToOneField(User,on_delete=models.CASCADE,related_name="cart")
-    is_active=models.BooleanField(default=True)
+# class Basket(models.Model):     #cart
+#     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_whishlist",default = "")
+#     scrap=models.ManyToManyField(Scrapbox,related_name="wished_scrap")
+#     created_at=models.DateTimeField(auto_now_add=True)
+   
+class WishList(models.Model):     #cart
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_whishlist",default = "")
+    scrap=models.ManyToManyField(Scrapbox,related_name="wished_scrap")
     created_at=models.DateTimeField(auto_now_add=True)
-    updated_at=models.DateTimeField(auto_now=True)
+   
+    
 
-
-    @property
-    def cart_items(self):
-        qs=self.cartitem.all() #cartitem points to basket of basketitem
-        return qs
- 
+   
 class BasketItem(models.Model):     #cartitem
-    basket=models.ForeignKey(Basket,on_delete=models.CASCADE,related_name="cartitem")
+    basket=models.ForeignKey(WishList,on_delete=models.CASCADE,related_name="cartitem")
     product=models.ForeignKey(Scrapbox,on_delete=models.CASCADE)
     qty=models.PositiveIntegerField(default=1)
     is_active=models.BooleanField(default=True)
@@ -55,16 +66,24 @@ class BasketItem(models.Model):     #cartitem
  
     
     #then go to form.py
-class UserProfile(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
-    email=models.CharField(max_length=200,null=True)
-    phone=models.CharField(max_length=200,null=True)
-    profile_pic=models.ImageField(upload_to="profilepics",null=True,blank=True)
+
+
+
+
+
+class Cart(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    products = models.ManyToManyField(Scrapbox, through="CartItem")
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Scrapbox, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+
+
     
 
-    def __str__(self):
-        return self.user.username
-    
 
 
 

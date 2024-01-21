@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from scrapbox import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,10 +33,11 @@ urlpatterns = [
     path('cart/view',views.CartListView.as_view(),name="cart-view"),
     # path('scrapbox/<int:pk>/addtobasket',views.AddToCartView.as_view(),name="add-cart"),
     path('scrap/<int:pk>/update',views.ScrapUpdateView.as_view(),name="scrap-update"),
-    path('scrapbox/<int:pk>/addtocart',views.AddToCartView.as_view(),name="addto-cart"),
+    # path('scrapbox/<int:pk>/addtocartlist',views.AddToCartView.as_view(),name="addto-cart"),
+    path('scrapbox/<int:pk>/addtocart/',views.AddToWishListView.as_view(),name="addto-cart")
    
     
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
  
