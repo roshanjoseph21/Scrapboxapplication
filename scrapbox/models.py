@@ -48,6 +48,8 @@ class WishList(models.Model):     #cart
     scrap=models.ManyToManyField(Scrapbox,related_name="wished_scrap")
     created_at=models.DateTimeField(auto_now_add=True)
    
+    def __str__(self):
+        return ', '.join(str(item) for item in self.scrap.all())
     
 
    
@@ -70,15 +72,16 @@ class BasketItem(models.Model):     #cartitem
 
 
 
-
-class Cart(models.Model):
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-    products = models.ManyToManyField(Scrapbox, through="CartItem")
-
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Scrapbox, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=0)
+   
+ 
+    def __str__(self):
+        return f'{self.quantity} x {self.product.name}'
+
+
+
 
 
 class Review(models.Model):
