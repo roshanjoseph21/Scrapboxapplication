@@ -2,7 +2,7 @@ from django import forms
 
 from django.contrib.auth.models import User  #import User model
 
-from scrapbox.models import Scrapbox,BasketItem,WishList
+from scrapbox.models import Scrapbox,BasketItem,WishList,Review
 from scrapbox.models import UserProfile,Posts
 
 from django.contrib.auth.forms import UserCreationForm
@@ -61,6 +61,13 @@ class UserProfileForm(forms.ModelForm):
         
         model=UserProfile
         fields="__all__"
+
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model=Review
+        fields=["text"]
 
         
       

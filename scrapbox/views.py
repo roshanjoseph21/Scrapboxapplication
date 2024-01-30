@@ -2,16 +2,28 @@ from django.shortcuts import render,redirect,reverse
 from django.contrib.auth import login,logout,authenticate
 from django.http import JsonResponse
 from django.views import View
+from django.utils.decorators import method_decorator
 
 from .models import Scrapbox, WishList
 from scrapbox.models import Scrapbox,UserProfile,WishList,BasketItem
 
 from django.views.generic import View,CreateView,UpdateView,DetailView
-from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm
+from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm,ReviewForm
 from scrapbox.forms import UserCreationForm #UserProfile
 
 
 from django.contrib import messages
+
+#authentication
+
+def signin_required(fn):
+    def wrapper(request,*args,**kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request,"Sign in required")
+            return redirect("signin")
+        else:
+            return fn(request,*args, **kwargs)
+    return wrapper
 
 # Create your views here.
 class RegistrationView(View):
@@ -50,9 +62,9 @@ class LoginView(View):
             
         print("invalid credentials..........")
         return render(request,"login.html",{"form":form})
-    
-#index view
+
 #http://127.0.0.1:8000/scrap/create
+@method_decorator(signin_required,name="dispatch")
 class ScrapCreateView(View):
     def get(self,request,*args,**kwargs):
         form=ScrapboxForm()
@@ -70,7 +82,7 @@ class ScrapCreateView(View):
 
 # scrap update view
 #http://127.0.0.1:8000/scrap/{id}/update
-        
+@method_decorator(signin_required,name="dispatch")
 class ScrapUpdateView(View):
   
     def get(self,request,*args,**kwargs):
@@ -87,13 +99,14 @@ class ScrapUpdateView(View):
         if (form.is_valid()):
             form.save()
             print("data updated sucessfully-----")
-            return redirect("index")
+            return redirect("list-all")
         else:
             print("can't update .......")
             return render(request,"scrapupdate.html",{"form":form})
 
 
 #list view
+@method_decorator(signin_required,name="dispatch")
 class ScrapboxListView(View):
     def get(self,request,*args,**kwargs):
         qs=Scrapbox.objects.all()
@@ -107,11 +120,13 @@ class SignOutView(View):
         return redirect("signin")
     
 #item view -retrive
+@method_decorator(signin_required,name="dispatch")
 class ItemView(View):
     def get(self,request,*args,**kwargs):
         id=kwargs.get("pk")
         qs=Scrapbox.objects.get(id=id)
         return render(request,"scrapboxitem_view.html",{"data":qs})
+    
     
     
 
@@ -243,7 +258,27 @@ class IndexView(CreateView):
     def get_success_url(self) -> str:
         return reverse("index")
 
-   
+
+@method_decorator(signin_required,name="dispatch")      
+class ReviewView(CreateView): #comment is gona create so create view
+    template_name="scrapboxitem_view.html"
+    form_class=ReviewForm #which form class is gona render
+
+    def get_success_url(self) -> str:
+        return reverse("itemview")
+    
+    def form_valid(self, form) :
+        #form.instance ponits to postform user
+        id=self.kwargs.get("pk")
+        product=Scrapbox.objects.get(id=id)
+        form.instance.user=self.request.user
+        form.instance.scrap=product
+        return super().form_valid(form)
+
+
+
+
+
 
 
 

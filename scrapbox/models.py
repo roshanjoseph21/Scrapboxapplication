@@ -81,10 +81,15 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
 
+class Review(models.Model):
+    user=models.ForeignKey(User,related_name="review",on_delete=models.CASCADE)
+    text=models.CharField(max_length=200)
+    created_date=models.DateTimeField(auto_now_add=True)
+    product=models.ForeignKey(Scrapbox,related_name="scrap_review",on_delete=models.CASCADE)
 
-    
 
-
+    def __str__(self):
+        return self.text
 
 
 

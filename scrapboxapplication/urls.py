@@ -23,16 +23,18 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register',views.RegistrationView.as_view(),name="register"),
-    path('signin',views.LoginView.as_view(),name="signin"),
+    path('',views.LoginView.as_view(),name="signin"),
     path('index',views.IndexView.as_view(),name="index"),
     path('scrap/create',views.ScrapCreateView.as_view(),name="scrap-create"),
     path('signout',views.SignOutView.as_view(),name="signout"),
     path('listall',views.ScrapboxListView.as_view(),name="list-all"),
-    path('itemview/<int:pk>/viewdetails',views.ItemView.as_view(),name="itemview"),
+    path('scrap/<int:pk>',views.ItemView.as_view(),name="itemview"),
     path('profile/<int:pk>/view',views.ProfileDetailView.as_view(),name="profiledetail_view"),
     path('cart/view',views.CartListView.as_view(),name="cart-view"),
     # path('scrapbox/<int:pk>/addtobasket',views.AddToCartView.as_view(),name="add-cart"),
     path('scrap/<int:pk>/update',views.ScrapUpdateView.as_view(),name="scrap-update"),
+    path("scrap/<int:pk>/review/add",views.ReviewView.as_view(),name="review"),
+
     # path('scrapbox/<int:pk>/addtocartlist',views.AddToCartView.as_view(),name="addto-cart"),
     path('scrapbox/<int:pk>/addtocart/',views.AddToWishListView.as_view(),name="addto-cart")
    
