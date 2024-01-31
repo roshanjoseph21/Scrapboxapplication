@@ -31,13 +31,11 @@ urlpatterns = [
     path('scrap/<int:pk>',views.ItemView.as_view(),name="itemview"),
     path('profile/<int:pk>/view',views.ProfileDetailView.as_view(),name="profiledetail_view"),
     path('cart/view',views.CartListView.as_view(),name="cart-view"),
-    # path('scrapbox/<int:pk>/addtobasket',views.AddToCartView.as_view(),name="add-cart"),
     path('scrap/<int:pk>/update',views.ScrapUpdateView.as_view(),name="scrap-update"),
     path("scrap/<int:pk>/review/add",views.ReviewView.as_view(),name="review"),
     path('scrapbox/<int:pk>/addtocart', views.AddToCartView.as_view(), name="addtocart"),
     path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('scrapbox/cartlist', views.CartListView.as_view(), name="cartlist-view"),
-    # path('scrapbox/<int:pk>/addtocart/',views.AddToWishListView.as_view(),name="addto-cart")
    
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
