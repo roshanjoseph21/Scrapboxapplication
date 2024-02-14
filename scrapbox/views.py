@@ -2,14 +2,17 @@ from django.shortcuts import render,redirect,reverse,get_object_or_404
 from django.contrib.auth import login,logout,authenticate
 from django.http import JsonResponse
 from django.views import View
-from django.utils.decorators import method_decorator
-from scrapbox.models import Scrapbox,UserProfile,WishList,CartItem
+
+from .models import Scrapbox, WishList
+from scrapbox.models import Scrapbox,UserProfile,WishList,BasketItem,CartItem
 
 from django.views.generic import View,CreateView,UpdateView,DetailView
 from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm,ReviewForm
-
+from scrapbox.forms import UserCreationForm #UserProfile
+from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 
 #authentication
 
@@ -32,7 +35,7 @@ class RegistrationView(View):
         form=UserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('register')
+            return redirect('signin')
         else:
            return render(request,"register.html",{"form":form})
         
@@ -48,10 +51,10 @@ class LoginView(View):
         print("login form..........")
         if form.is_valid():
             print("start login session....")
-            username1=form.cleaned_data.get("username")
-            password1=form.cleaned_data.get("password")
-            print("user details....",username1,password1)
-            user_object=authenticate(request,username=username1,password=password1)
+            uname=form.cleaned_data.get("username")
+            pwd=form.cleaned_data.get("password")
+            print("user details....",uname,pwd)
+            user_object=authenticate(request,username=uname,password=pwd)
             if user_object:
                 print("valid credentilas..........")
                 login(request,user_object)
@@ -115,7 +118,10 @@ class SignOutView(View):
     def get(self,request,*args,**kwargs):
         logout(request)
         return redirect("signin")
-    
+
+
+
+#http://127.0.0.1:8000/scrap/{id}/
 #item view -retrive
 @method_decorator(signin_required,name="dispatch")
 class ItemView(View):
@@ -149,9 +155,7 @@ class ProfileUpdateView(UpdateView):
 # http://127.0.0.1:8000/cart/view
     
 # # http://127.0.0.1:8000/listall
-
-
-class AddToCartView(View) :
+class AddToCartView(View):
   
     def post(self, request, *args, **kwargs):
         scrapbox_id = kwargs.get("pk")
@@ -160,14 +164,14 @@ class AddToCartView(View) :
         scrapbox_object = get_object_or_404(Scrapbox, id=scrapbox_id)
         print(scrapbox_object)
         action = request.POST.get("action")
-        print("object", action)
+        print("++++++", action)
 
         cart, created = WishList.objects.get_or_create(user=request.user)
 
         if action == "addtocart":
             
             cart.scrap.add(scrapbox_object)
-            print("added to cart")
+            print("added......")
 
         return redirect("index")
 
@@ -209,15 +213,14 @@ class CartListView(View):
 
         return render(request, "cartlist.html", {"user_wishlist": user_wishlist})
 
-
-
-
 class RemoveCartItemView(View):
     def get(self, request, *args, **kwargs):
         wishlist_item_id = kwargs.get("pk")
         wishlist_item = get_object_or_404(WishList, id=wishlist_item_id, user=request.user)
         wishlist_item.delete()
         return redirect("cartlist-view")
+
+
 
 
 @method_decorator(signin_required,name="dispatch")      
@@ -228,6 +231,9 @@ def add_to_cart(request, product_id):
     cart_item.quantity += 1
     cart_item.save()
     return redirect('cart:view_cart')
+   
+
+
 
 
 

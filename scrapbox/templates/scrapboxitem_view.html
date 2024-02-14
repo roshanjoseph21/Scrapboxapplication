@@ -52,14 +52,14 @@
 
     <div class="container">
         <div class="card-container">
-            <div class="card" style="width: 300px; margin-top: 150px;">
+            <div class="card" style="width: 310px; margin-top: 150px;">
               {%if data.picture%}
                   <img src="{{data.picture.url}}">
               {%endif%}
             </div>
 
 
-            <div class="card" style="margin-top: -350px; margin-left: 350px; width: fit-content;">
+            <div class="card" style="margin-top: -410px; margin-left: 350px; width: fit-content;">
                 <!-- <img src="..." class="card-img-top" alt="..."> -->
 
                   <h5 class="title card-title ms-2">{{data.name}}</h5>
@@ -73,10 +73,16 @@
                 
                 </ul>
                 <div class="card-body">
-                  <a href="{%url 'scrap-update' data.id %}" class="card-link"><button  class="btn btn-secondary"><i class="fa-solid fa-pencil"></i></button></a>
-
-                  <a href="{%url 'addtocart' data.id %}" class="card-link"><button  class="btn btn-secondary"><i class="fa-solid fa-cart-plus"></i></button></a>
-                </div>
+                  <a href="{%url 'scrap-update' data.id %}" class="card-link"><button  class="btn btn-secondary"><i class="fa-solid fa-pencil"></i></button></a> 
+                  <div>&nbsp;</div>
+    <!-- add to cart -->
+    <form action="{% url 'addtocart' data.id %}" method="post" data-bs-toggle="tooltip" data-bs-placement="bottom">
+      {% csrf_token %}
+      <button class="btn btn-outline-primary" type="submit" name="action" value="addtocart">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </button>
+    </form>                
+</div>
                  
 
                   

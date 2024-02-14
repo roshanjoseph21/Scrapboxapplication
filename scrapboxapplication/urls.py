@@ -36,7 +36,9 @@ urlpatterns = [
     path('scrapbox/<int:pk>/addtocart', views.AddToCartView.as_view(), name="addtocart"),
     path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('scrapbox/cartlist', views.CartListView.as_view(), name="cartlist-view"),
-   
+    path('scrapbox/<int:pk>/cart/delete',views.RemoveCartItemView.as_view(),name="removecart"),
+
+    path('add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
