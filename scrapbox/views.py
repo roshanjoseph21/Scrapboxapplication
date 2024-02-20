@@ -121,8 +121,6 @@ class SignOutView(View):
 
 
 
-#http://127.0.0.1:8000/scrap/{id}/
-#item view -retrive
 @method_decorator(signin_required,name="dispatch")
 class ItemView(View):
     def get(self,request,*args,**kwargs):
@@ -133,8 +131,7 @@ class ItemView(View):
     
     
 
-#user profile view
-# 
+
 class ProfileDetailView(DetailView):
         template_name="profile_detail.html"
         model=UserProfile
@@ -150,17 +147,12 @@ class ProfileUpdateView(UpdateView):
         return reverse("index")
   
 
-# add to cart from scraplist
-#  url:http://127.0.0.1:8000/scrapbox/{id}/add_to_basket/
-# http://127.0.0.1:8000/cart/view
-    
-# # http://127.0.0.1:8000/listall
+
 class AddToCartView(View):
   
     def post(self, request, *args, **kwargs):
         scrapbox_id = kwargs.get("pk")
         print(scrapbox_id)
-        # scrapbox_object=Scrapbox.objects.get(id=id)
         scrapbox_object = get_object_or_404(Scrapbox, id=scrapbox_id)
         print(scrapbox_object)
         action = request.POST.get("action")
@@ -175,37 +167,7 @@ class AddToCartView(View):
 
         return redirect("index")
 
-# add to wishlist
-    # http://127.0.0.1:8000/scrapbox/4/addtocart
 
-# class AddToWishList(View):
-  
-    
-    # def post(self,request,*args,**kwargs):
-    #     id=kwargs.get("pk")
-    #     scrapbox_object=Scrapbox.objects.get(id=id)
-    #     action=request.POST.get("action")
-    #     print("++++++",action)
-    #     cart,created=WishList.objects.get_or_create(user=request.user)
-    #     if action == "addtocart":  #addtocart
-    #         cart.scrap.add(scrapbox_object)           #request.user.profile will give the logined user
-    #     return redirect("index")
-     
-
-
-
-     
-         
-         
-
-#cart -view cart list  
-# http://127.0.0.1:8000/cart/view  
-     
-# class CartListView(View):
-#     def get(self,request,*args,**kwargs):
-#         qs=WishList.objects.get(user_id=request.user)
-#         wish_items=Scrapbox.objects.exclude(user=request.user)
-#         return render(request,"cartlist.html",{"data":qs})
         
 class CartListView(View):
     def get(self, request, *args, **kwargs):
@@ -235,10 +197,6 @@ def add_to_cart(request, product_id):
 
 
 
-
-
-#item add view
-
 class IndexView(CreateView):
     template_name="index.html"
     form_class=ScrapboxForm
@@ -249,15 +207,14 @@ class IndexView(CreateView):
 
 
 @method_decorator(signin_required,name="dispatch")      
-class ReviewView(CreateView): #comment is gona create so create view
+class ReviewView(CreateView):
     template_name="scrapboxitem_view.html"
-    form_class=ReviewForm #which form class is gona render
+    form_class=ReviewForm 
 
     def get_success_url(self) -> str:
         return reverse("itemview")
     
     def form_valid(self, form) :
-        #form.instance ponits to postform user
         id=self.kwargs.get("pk")
         product=Scrapbox.objects.get(id=id)
         form.instance.user=self.request.user

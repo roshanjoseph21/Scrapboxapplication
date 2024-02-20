@@ -33,10 +33,10 @@
             <div class="row" >
                 <div class="col-l-10 mt-2 p-5 body  " >        
                     <form  action="" method="post" enctype="multipart/form-data">
-                        <h4 class="text-center">Add new data here</h4>
+                        <h4 class="text-center">Add the product to be sold</h4>
                         {%csrf_token%}
                         {{form.as_p}}
-                        <button class="btn btn-secondary" type="submit">
+                        <button class="btn btn-success" type="submit">
                             Submit
                         </button>
                     </form>
