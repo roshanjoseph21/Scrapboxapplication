@@ -7,7 +7,7 @@ from .models import Scrapbox, WishList
 from scrapbox.models import Scrapbox,UserProfile,WishList,BasketItem,CartItem
 
 from django.views.generic import View,CreateView,UpdateView,DetailView
-from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm,ReviewForm
+from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm
 from scrapbox.forms import UserCreationForm #UserProfile
 from django.contrib.auth.decorators import login_required
 
@@ -206,20 +206,20 @@ class IndexView(CreateView):
         return reverse("index")
 
 
-@method_decorator(signin_required,name="dispatch")      
-class ReviewView(CreateView):
-    template_name="scrapboxitem_view.html"
-    form_class=ReviewForm 
+# @method_decorator(signin_required,name="dispatch")      
+# class ReviewView(CreateView):
+#     template_name="scrapboxitem_view.html"
+#     form_class=ReviewForm 
 
-    def get_success_url(self) -> str:
-        return reverse("itemview")
+#     def get_success_url(self) -> str:
+#         return reverse("itemview")
     
-    def form_valid(self, form) :
-        id=self.kwargs.get("pk")
-        product=Scrapbox.objects.get(id=id)
-        form.instance.user=self.request.user
-        form.instance.scrap=product
-        return super().form_valid(form)
+#     def form_valid(self, form) :
+#         id=self.kwargs.get("pk")
+#         product=Scrapbox.objects.get(id=id)
+#         form.instance.user=self.request.user
+#         form.instance.scrap=product
+#         return super().form_valid(form)
 
 
 

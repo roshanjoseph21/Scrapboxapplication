@@ -2,10 +2,6 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from datetime import datetime
-
-from django.utils import timezone
-
 from django.db.models.signals import post_save 
 
 # Create your models here.
@@ -14,7 +10,6 @@ class UserProfile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
     email=models.CharField(max_length=200,null=True)
     phone=models.CharField(max_length=200,null=True)
-    profile_pic=models.ImageField(upload_to="profilepics",null=True,blank=True)
     
 
     def __str__(self):
@@ -84,15 +79,15 @@ class CartItem(models.Model):
 
 
 
-class Review(models.Model):
-    user=models.ForeignKey(User,related_name="review",on_delete=models.CASCADE)
-    text=models.CharField(max_length=200)
-    created_date=models.DateTimeField(auto_now_add=True)
-    product=models.ForeignKey(Scrapbox,related_name="scrap_review",on_delete=models.CASCADE)
+# class Review(models.Model):
+#     user=models.ForeignKey(User,related_name="review",on_delete=models.CASCADE)
+#     text=models.CharField(max_length=200)
+#     created_date=models.DateTimeField(auto_now_add=True)
+#     product=models.ForeignKey(Scrapbox,related_name="scrap_review",on_delete=models.CASCADE)
 
 
-    def __str__(self):
-        return self.text
+#     def __str__(self):
+#         return self.text
 
 
 
