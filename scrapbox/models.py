@@ -9,7 +9,6 @@ from django.db.models.signals import post_save
 class UserProfile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
     email=models.CharField(max_length=200,null=True)
-    phone=models.CharField(max_length=200,null=True)
     
 
     def __str__(self):

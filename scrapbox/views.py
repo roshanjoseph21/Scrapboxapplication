@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,reverse,get_object_or_404
 from django.contrib.auth import login,logout,authenticate
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseForbidden
 from django.views import View
 
 from .models import Scrapbox, WishList
@@ -86,7 +86,6 @@ class ScrapCreateView(View):
 class ScrapUpdateView(View):
   
     def get(self,request,*args,**kwargs):
-        
         id=kwargs.get("pk")
         obj=Scrapbox.objects.get(id=id)
         form=ScrapboxForm(instance=obj)
@@ -138,14 +137,6 @@ class ProfileDetailView(DetailView):
         context_object_name="data"
         
     
-class ProfileUpdateView(UpdateView):
-    template_name="profile_add.html"
-    form_class=UserProfileForm
-    model=UserProfile
-
-    def get_success_url(self) -> str:
-        return reverse("index")
-  
 
 
 class AddToCartView(View):

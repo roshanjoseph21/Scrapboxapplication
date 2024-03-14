@@ -73,8 +73,12 @@
                 
                 </ul>
                 <div class="card-body">
+                  {%if request.user == data.user%}
                   <a href="{%url 'scrap-update' data.id %}" class="card-link"><button  class="btn btn-secondary"><i class="fa-solid fa-pencil"></i></button></a> 
-                  <div>&nbsp;</div>
+                  {%endif%}
+                  <div>&nbsp;
+                    
+                  </div>
     <!-- add to cart -->
     <form action="{% url 'addtocart' data.id %}" method="post" data-bs-toggle="tooltip" data-bs-placement="bottom">
       {% csrf_token %}

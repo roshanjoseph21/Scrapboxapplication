@@ -25,9 +25,9 @@
         </div>   
 </nav>     
 
-    <div class="container mt-3">
+    <div class="container mt-3 d-flex justify-content-evenly">
         <h3>My Basket</h3>
-        <table class=" mt-4 table-info table  ">
+        <!-- <table class=" mt-4 table-info table  ">
 
         <ul>
             {% if user_wishlist %}
@@ -53,7 +53,28 @@
             
                 
             {% endif %}
-        </ul>
+        </ul> -->
+            {%if user_wishlist %}
+                {% for product in user_wishlist.scrap.all %}
+                    <div class="card mb-3 mt-3" id={{product.id}} style="
+                        width: 260px;
+                        display: grid;">
+                        <img class="card-img-top d-flex justify-content-center" src="{{product.picture.url}}" alt="img" style="width: auto; height: 200px;">
+                        <div class="card-body">
+                            <p class="card-title">{{product.name}}</p>
+                            <p class="card-title"><i class="fa-solid fa-list" style="color: #06b711;"></i>  {{product.category}}</p>
+                            <p class="card-title"><i class="fa-solid fa-indian-rupee-sign" style="color: #0ea427;"></i>  Rs.{{product.price}}/-</p>
+                            <p class="card-title"><i class="fa-solid fa-location-dot" style="color: #0ea427;"></i>    {{product.location}}</p>
+                            <p class="card-title">Contact:{{product.phone_no}}</p>
+
+                        </div>
+                        <div class="button-container mb-3">
+                         &nbsp; &nbsp;<a href="{%url 'itemview' product.id %}"><button class="btn btn-secondary">View</button></a>
+                        <a href="{% url 'removecart' product.id %}"><button class="btn btn-success">Remove From Cart</button></a>
+                        </div>
+                    </div>
+                {%endfor%}
+            {%endif%}
     </div>
 </body>
 
