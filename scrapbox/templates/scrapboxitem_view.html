@@ -73,20 +73,21 @@
                 
                 </ul>
                 <div class="card-body">
-                  {%if request.user == data.user%}
                   <a href="{%url 'scrap-update' data.id %}" class="card-link"><button  class="btn btn-secondary"><i class="fa-solid fa-pencil"></i></button></a> 
-                  {%endif%}
+                 
                   <div>&nbsp;
-                    
-                  </div>
-    <!-- add to cart -->
+                    <!-- add to cart -->
     <form action="{% url 'addtocart' data.id %}" method="post" data-bs-toggle="tooltip" data-bs-placement="bottom">
       {% csrf_token %}
       <button class="btn btn-outline-primary" type="submit" name="action" value="addtocart">
         <i class="fa-solid fa-cart-shopping"></i>
       </button>
-    </form>                
-</div>
+    </form>
+    &nbsp
+    <a class="d-flex justify-content-start" href="{%url 'shipping' data.id%}"><button class="btn btn-secondary">Buy Now</button></a>
+                  </div>
+               
+    </div>
                  
 
                   

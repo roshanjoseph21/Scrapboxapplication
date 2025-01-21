@@ -7,7 +7,7 @@ from .models import Scrapbox, WishList
 from scrapbox.models import Scrapbox,UserProfile,WishList,BasketItem,CartItem
 
 from django.views.generic import View,CreateView,UpdateView,DetailView
-from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm
+from scrapbox.forms import UserForm,LoginForm,ScrapboxForm,UserProfileForm,BasketForm,BasketItemForm,ShippingForm
 from scrapbox.forms import UserCreationForm #UserProfile
 from django.contrib.auth.decorators import login_required
 
@@ -89,7 +89,12 @@ class ScrapUpdateView(View):
         id=kwargs.get("pk")
         obj=Scrapbox.objects.get(id=id)
         form=ScrapboxForm(instance=obj)
-        return render(request,"scrapupdate.html",{"form":form})
+        qs=Scrapbox.objects.get(id=id)
+        if form.instance.user==request.user:
+            return render(request,"scrapupdate.html",{"form":form})
+        else:
+            messages.error(request,"Access Denied")
+            return render(request,"scrapboxitem_view.html",{"data":qs})
     
     def post(self,request,*args,**kwargs):
         id=kwargs.get("pk")
@@ -97,10 +102,8 @@ class ScrapUpdateView(View):
         form=ScrapboxForm(request.POST,instance=obj,files=request.FILES)
         if (form.is_valid()):
             form.save()
-            print("data updated sucessfully-----")
             return redirect("list-all")
         else:
-            print("can't update .......")
             return render(request,"scrapupdate.html",{"form":form})
 
 
@@ -139,7 +142,7 @@ class ProfileDetailView(DetailView):
     
 
 
-class AddToCartView(View):
+class AddToWishListView(View):
   
     def post(self, request, *args, **kwargs):
         scrapbox_id = kwargs.get("pk")
@@ -156,7 +159,7 @@ class AddToCartView(View):
             cart.scrap.add(scrapbox_object)
             print("added......")
 
-        return redirect("index")
+        return redirect("cartlist-view")
 
 
         
@@ -176,11 +179,10 @@ class RemoveCartItemView(View):
 
 
 
-@method_decorator(signin_required,name="dispatch")      
+@method_decorator(signin_required,name="dispatch")     
 def add_to_cart(request, product_id):
     product = Scrapbox.objects.get(id=product_id)
-    cart_item, created = CartItem.objects.get_or_create(product=product, 
-                                                       user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(product=product,user=request.user)
     cart_item.quantity += 1
     cart_item.save()
     return redirect('cart:view_cart')
@@ -195,6 +197,26 @@ class IndexView(CreateView):
     
     def get_success_url(self) -> str:
         return reverse("index")
+    
+
+@method_decorator(signin_required,name="dispatch")
+class ShippingView(View):
+    def get(self,request,*args,**kwargs):
+        form=ShippingForm()
+        return render(request,"shipping.html",{"form":form})
+
+    def post(self,request,*args,**kwargs):
+        form=ShippingForm(request.POST,files=request.FILES)
+        if form.is_valid():
+                form.save()
+                return redirect('orderplaced.html')
+        else:
+                return render(request,"orderplaced.html")
+
+
+class OrderPlacedView(View):
+        template_name="orderplaced.html"
+
 
 
 # @method_decorator(signin_required,name="dispatch")      

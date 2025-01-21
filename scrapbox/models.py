@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from django.db.models.signals import post_save 
+from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
 
@@ -23,11 +25,18 @@ class Scrapbox(models.Model):
     picture=models.ImageField(upload_to="images",null=True,blank=True)
     phone_no=models.CharField(max_length=200,null=True)
     description=models.CharField(max_length=500,null=True,blank=True)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
    
 
     def __str__(self):
             
         return self.name
+    
+
+class Shipping(models.Model):
+    name=models.CharField(max_length=200)
+    address=models.CharField(max_length=200)
+    phone_no=models.CharField(max_length=200)
     
 #cartitem
 
@@ -38,7 +47,7 @@ class Scrapbox(models.Model):
 #     created_at=models.DateTimeField(auto_now_add=True)
    
 class WishList(models.Model):     #cart
-    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_whishlist",default = "")
+    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_whishlist",default = "",null=True)
     scrap=models.ManyToManyField(Scrapbox,related_name="wished_scrap")
     created_at=models.DateTimeField(auto_now_add=True)
    
@@ -103,21 +112,7 @@ class CartItem(models.Model):
 
 
     
-class Posts(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="userpost")
-    title=models.CharField(max_length=200)
-    post_image=models.ImageField(upload_to="posters",null=True,blank=True)
-    created_date=models.DateTimeField(auto_now_add=True)
-    
 
-    def __str__(self):
-        return self.title
-
-class Comments(models.Model):
-    user=models.ForeignKey(User,related_name="comment",on_delete=models.CASCADE)
-    text=models.CharField(max_length=200)
-    created_date=models.DateTimeField(auto_now_add=True)
-    post=models.ForeignKey(Posts,related_name="post_comments",on_delete=models.CASCADE)
 
 
 def create_profile(sender,created,instance,**kwargs):

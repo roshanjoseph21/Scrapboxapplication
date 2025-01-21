@@ -2,8 +2,8 @@ from django import forms
 
 from django.contrib.auth.models import User  #import User model
 
-from scrapbox.models import Scrapbox,BasketItem,WishList
-from scrapbox.models import UserProfile,Posts
+from scrapbox.models import Scrapbox,BasketItem, UserProfile,WishList,Shipping
+
 
 from django.contrib.auth.forms import UserCreationForm
 
@@ -31,7 +31,8 @@ class LoginForm(forms.Form):
 class ScrapboxForm(forms.ModelForm):
     class Meta:
         model=Scrapbox
-        fields="__all__"
+        # fields="__all__"
+        exclude=("owner",)
         
         widgets={
             "name":forms.TextInput(attrs={"class":"form-control"}),
@@ -59,6 +60,11 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         
         model=UserProfile
+        fields="__all__"
+
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model=Shipping
         fields="__all__"
 
 
